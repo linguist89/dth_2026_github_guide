@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Pages Setup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+/* Layout: VS Code Dark+ chrome. A title bar anchors the top, the page is the mid-grey sidebar tone, each step is a darker editor card. Deliberately dark only. */
+:root {
+  --bg: #2b2d30;
+  --bar: #3a3d41;
+  --card: #1f1f1f;
+  --code-bg: #2a2a2a;
+  --line: #45484d;
+  --ink: #d4d4d4;
+  --muted: #9a9da1;
+  --blue: #4fa3f7;
+  --fn: #dcdcaa;
+  --str: #ce9178;
+  --var: #9cdcfe;
+  --mine-bg: rgba(156, 220, 254, 0.16);
+  --white: #f0f0f0;
+  --f-mono: "JetBrains Mono", Consolas, Menlo, monospace;
+  color-scheme: dark;
+}
+.top {
+  background: var(--bar); border-bottom: 1px solid var(--line);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.top-in { max-width: 680px; margin: 0 auto; padding-block: 22px 0; display: grid; gap: 16px; }
+.tabs { display: flex; gap: 2px; margin-bottom: -1px; overflow-x: auto; }
+.tab { font: inherit; font-size: 14px; cursor: pointer; color: var(--muted); background: transparent; border: 1px solid transparent; border-bottom: 0; border-top: 2px solid transparent; padding: 8px 16px; white-space: nowrap; }
+.tab:hover { color: var(--white); }
+.tab[aria-selected="true"] { color: var(--white); background: var(--bg); border-color: var(--line); border-top-color: var(--blue); }
+.panel { display: grid; gap: 44px; }
+[hidden] { display: none !important; }
+.part h2 { padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-mono); font-size: 15px; line-height: 1.65; }
+.wrap {
+  max-width: 680px; margin: 0 auto; padding-block: 36px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 44px;
+}
+h1, h2 { margin: 0; line-height: 1.3; font-weight: 700; color: var(--white); }
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.2rem; }
+h2 span { color: var(--blue); }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.part { display: grid; gap: 12px; }
+.why { color: var(--muted); margin-bottom: 4px; }
+.steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: s; }
+.steps > li {
+  counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+  padding: 14px 16px; display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 10px;
+}
+.steps > li::before { content: counter(s); color: var(--blue); font-weight: 700; }
+.step { display: grid; gap: 10px; min-width: 0; }
+.head { display: grid; }
+.sub { color: var(--muted); font-size: 13.5px; }
+b { color: var(--white); }
+
+.cmd {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+  background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px;
+}
+.cmd pre {
+  margin: 0; padding: 8px 12px; font-family: var(--f-mono); font-size: 14px; color: var(--ink);
+  white-space: pre-wrap; word-break: break-word;
+}
+.cmd pre.term::before { content: "$ "; color: var(--muted); }
+.cmd button {
+  font: inherit; font-size: 12.5px; cursor: pointer; background: transparent; color: var(--blue);
+  border: 0; border-left: 1px solid var(--line); padding: 8px 14px; align-self: stretch;
+}
+.cmd button:hover { background: var(--blue); color: #ffffff; }
+.example { background: transparent; border-style: dashed; }
+.example pre { color: var(--muted); }
+.fn { color: var(--fn); }
+.part.wide { width: min(1080px, calc(100vw - 48px)); margin-left: calc(50% - min(540px, 50vw - 24px)); }
+.how { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 20px; align-items: start; }
+.how-main { display: grid; gap: 14px; min-width: 0; }
+.how-controls { border-left: 1px solid var(--line); padding-left: 20px; }
+@media (max-width: 860px) {
+  .part.wide { width: auto; margin-left: 0; }
+  .how { grid-template-columns: minmax(0, 1fr); }
+  .how-controls { border-left: 0; padding-left: 0; }
+}
+.how-term { font-size: 14px; background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px; padding: 8px 12px; min-height: 2.6em; overflow-wrap: anywhere; }
+.how-term .muted { color: var(--muted); }
+.how-term .r { color: #f14c4c; }
+.how-term .g { color: #23d18b; }
+.scene .dot { fill: var(--line); }
+.scene .url { fill: var(--muted); font: 10px var(--f-mono); }
+.scene .site-h { fill: var(--white); font: 700 15px var(--f-mono); transition: fill .4s; }
+.scene .site-h.new { fill: #23d18b; }
+.how-term .out { display: inline-block; margin-top: 4px; padding-left: 10px; border-left: 2px solid var(--line); }
+.scene { display: block; width: 100%; height: auto; max-height: 36vh; }
+.scene .frame { fill: var(--code-bg); stroke: var(--line); stroke-width: 2; transition: stroke .4s; }
+.scene .screen { fill: var(--bg); }
+.scene .on .frame, .scene .cloud.on { stroke: var(--blue); }
+.scene .cloud { fill: var(--code-bg); stroke: var(--line); stroke-width: 2; transition: stroke .4s; }
+.scene .arc { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 6 6; transition: stroke .4s; }
+.scene .arc.on { stroke: var(--blue); }
+.scene .lbl { fill: var(--white); font: 700 20px var(--f-mono); }
+.scene .lbl-sub { fill: var(--muted); font: 15px var(--f-mono); }
+.scene .mini { fill: var(--muted); font: 12px var(--f-mono); }
+.doc { color: var(--ink); transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s; }
+.doc.red { color: #f14c4c; }
+.doc.green { color: #23d18b; }
+.doc .paper { fill: var(--card); stroke: currentColor; stroke-width: 2; transition: stroke .4s; }
+.doc .fold, .doc .lines { fill: none; stroke: currentColor; stroke-width: 2; transition: stroke .4s; }
+.doc .lines { opacity: .6; }
+.scene .box-body, .lid rect { fill: var(--code-bg); stroke: var(--fn); stroke-width: 2; }
+.lid { transform-box: fill-box; transform-origin: 0% 100%; transition: transform .6s ease; }
+.scene .ctag { fill: var(--fn); font: 700 13px var(--f-mono); opacity: 0; transition: opacity .4s; }
+.scene .ctag.on { opacity: 1; }
+.copy { opacity: 0; }
+.stk { opacity: 0; transition: opacity .5s; }
+.scene .fname { fill: var(--muted); font: 11px var(--f-mono); transition: opacity .3s; }
+.doc.nolabel .fname { opacity: 0; }
+.hist-list .msg { color: var(--white); }
+.hist-list .f { font-size: 11.5px; color: var(--muted); }
+.hist-list .k.new { color: #23d18b; }
+.hist-list .k.changed { color: #e2c08d; }
+.hist { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 10px; }
+.hist-label { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.hist-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); min-height: 3.6em; }
+.hist-list li { position: relative; padding: 20px 8px 0 0; display: grid; font-size: 13px; line-height: 1.4; min-width: 0; }
+.hist-list li::before { content: ""; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border: 2px solid var(--fn); border-radius: 50%; background: var(--card); }
+.hist-list li:not(:last-child)::after { content: ""; position: absolute; top: 6px; left: 14px; right: 0; height: 2px; background: var(--line); }
+.hist-list .id { color: var(--fn); font-size: 12px; }
+.hist-list .pop { animation: pop .5s ease; }
+@keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.hist-list li.empty { grid-column: 1 / -1; padding: 0; color: var(--muted); align-self: center; }
+.hist-list li.empty::before, .hist-list li.empty::after { display: none; }
+.hist-list { min-height: 4.2em; align-items: start; }
+.notrans * { transition: none !important; }
+.how-cap { min-height: 1.7em; }
+
+.how-controls { display: grid; gap: 12px; counter-reset: st; }
+.pill { counter-increment: st; }
+.pill::before { content: counter(st); color: var(--blue); font-weight: 700; margin-right: 8px; }
+.pill[aria-pressed="true"]::before { color: var(--white); }
+.grp { display: grid; gap: 6px; }
+.grp-h { font-size: 12px; color: var(--muted); }
+.grp-b { display: flex; flex-wrap: wrap; gap: 6px; }
+.hist-list .where { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.hist-list .where.gh { color: var(--blue); }
+.pill, .play { font: inherit; font-size: 13px; cursor: pointer; border: 1px solid var(--line); border-radius: 4px; background: var(--code-bg); color: var(--ink); padding: 4px 12px; }
+.pill[aria-pressed="true"] { border-color: var(--blue); color: var(--white); background: rgba(79, 163, 247, .18); }
+.play { justify-self: start; color: var(--blue); }
+.pill:hover, .play:hover { border-color: var(--blue); }
+@media (prefers-reduced-motion: reduce) { .scene * { transition: none !important; } }
+.optional {
+  border: 1px dashed var(--line); border-radius: 6px; padding: 14px 16px 14px calc(16px + 2em + 10px);
+  display: grid; gap: 10px;
+}
+.tag { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.status { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; }
+.red { color: #f14c4c; font-weight: 700; }
+.green { color: #23d18b; font-weight: 700; }
+@media (max-width: 480px) { .optional { padding-left: 16px; } }
+.str { color: var(--str); }
+
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><h1>GitHub Pages Setup</h1>
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" class="tab" id="tab-setup" aria-controls="setup" aria-selected="true">Full setup</button>
+    <button type="button" role="tab" class="tab" id="tab-changes" aria-controls="changes" aria-selected="false">Making changes</button>
+  </div>
+</div></header>
+
+<div class="wrap">
+<div class="panel" id="setup" role="tabpanel" aria-labelledby="tab-setup">
+
+  <section class="part wide">
+    <h2>How it fits together</h2>
+    <div class="how" data-anim="setup"></div>
+  </section>
+
+  <section class="part">
+    <h2><span>1</span> Set up your Git repo</h2>
+    <p class="why">Git turns your folder into a repository that remembers every version you save.</p>
+    <ol class="steps">
+      <li><div class="step">
+        <div class="head"><p>Unzip the website template.</p><p class="sub">So you get a normal folder you can work in.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">cd</span> week43_assignment_template</pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">unzip</span> html_css_template.zip</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Turn the folder into a Git repo.</p><p class="sub">So it can remember every version you save.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">cd</span> html_css_template</pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> init</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Tell Git who you are. Change the text between the quotation marks <span class="str">" "</span> to your own name and email.</p><p class="sub">So every save is signed by you, and you only log in once.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> config --global user.name <span class="str">"Your Name"</span></pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> config --global user.email <span class="str">"you@example.com"</span></pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> config --global credential.helper store</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Save your first version.</p><p class="sub">So you have a snapshot of your site, ready to upload.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> add .</pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> commit -m <span class="str">"First commit"</span></pre><button type="button">Copy</button></div>
+      </div></li>
+    </ol>
+    <div class="optional">
+      <span class="tag">Optional</span>
+      <div class="head"><p>Check that everything worked.</p><p class="sub">So you can see what Git is waiting for you to do next.</p></div>
+      <div class="cmd"><pre class="term"><span class="fn">git</span> status</pre><button type="button">Copy</button></div>
+      <ul class="status">
+        <li><span class="red">Red</span> file names? Use <b>git add</b>.</li>
+        <li><span class="green">Green</span> file names? Use <b>git commit</b>.</li>
+        <li><b>nothing to commit</b>? Everything is saved.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="part">
+    <h2><span>2</span> Create a token</h2>
+    <p class="why">GitHub needs proof that it is really you uploading. A token is that proof.</p>
+    <ol class="steps">
+      <li><p>Click your profile picture (top right), then <b>Settings</b>.</p></li>
+      <li><p>On the left, click <b>Developer settings</b>.</p></li>
+      <li><p>Click <b>Personal access tokens</b>, then <b>Tokens (classic)</b>.</p></li>
+      <li><p>Click <b>Generate new token</b>, then <b>Generate new token (classic)</b>.</p></li>
+      <li><div class="step">
+        <p>In <b>Note</b>, paste this name:</p>
+        <div class="cmd"><pre>dth_2026_website_token</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><p>Tick <b>repo</b>.</p></li>
+      <li><p>Scroll down and click <b>Generate token</b>.</p></li>
+      <li><p><b>Keep this page open.</b> You can only see the token once.</p></li>
+    </ol>
+  </section>
+
+  <section class="part">
+    <h2><span>3</span> Push to GitHub</h2>
+    <p class="why">Your files are only on your computer. Pushing copies them to GitHub.</p>
+    <ol class="steps">
+      <li><div class="step">
+        <p>On your repo page on GitHub, copy the line that starts with <b>git remote add</b> and paste it in the terminal. It looks like this:</p>
+        <div class="cmd example"><pre>git remote add origin https://github.com/yourname/yourrepo.git</pre></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Upload your files.</p><p class="sub">So your site is stored online on GitHub.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> push -u origin master</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><p>Type your GitHub username and press Enter.</p></li>
+      <li><p>Paste your token as the password and press Enter. Nothing shows while you paste. That is normal.</p></li>
+    </ol>
+  </section>
+
+  <section class="part">
+    <h2><span>4</span> Publish with GitHub Pages</h2>
+    <p class="why">GitHub Pages turns your files into a website anyone can visit.</p>
+    <ol class="steps">
+      <li><p>On your repo page, click <b>Settings</b>.</p></li>
+      <li><p>On the left, click <b>Pages</b>.</p></li>
+      <li><p>Under <b>Branch</b>, change <b>None</b> to <b>master</b>.</p></li>
+      <li><p>Click <b>Save</b>.</p></li>
+      <li><div class="step">
+        <p>Wait a few minutes. Your site will be at an address like this:</p>
+        <div class="cmd example"><pre>https://yourname.github.io/yourrepo/</pre></div>
+      </div></li>
+    </ol>
+  </section>
+</div>
+<div class="panel" id="changes" role="tabpanel" aria-labelledby="tab-changes" hidden>
+  <section class="part wide">
+    <h2>What happens when you change a file</h2>
+    <div class="how" data-anim="changes"></div>
+  </section>
+  <section class="part">
+    <h2>Change your site</h2>
+    <p class="why">Your GitHub Pages site updates every time you push a new commit. You only need three commands: add, commit, push.</p>
+    <ol class="steps">
+      <li><div class="step">
+        <div class="head"><p>Go into your website folder.</p><p class="sub">So Git knows which repo you are working in.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">cd</span> week43_assignment_template/html_css_template</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Change a file and save it.</p><p class="sub">For example, change the heading in index.html, then press Ctrl+S.</p></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>See what changed.</p><p class="sub">Files you changed show in red.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> status</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Get your changes ready to save.</p><p class="sub">So they go into the next commit. In git status they turn green.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> add .</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Save a new version. Change the text between the quotation marks <span class="str">" "</span> to say what you changed.</p><p class="sub">So your history shows what each change was.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> commit -m <span class="str">"Change heading"</span></pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Send it to GitHub.</p><p class="sub">So GitHub has your new version. Git remembers your token, so you are not asked again.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> push</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Check your site.</p><p class="sub">Wait a minute or two, then refresh the page. Still the old version? Press Ctrl+Shift+R.</p></div>
+        <div class="cmd example"><pre>https://yourname.github.io/yourrepo/</pre></div>
+      </div></li>
+    </ol>
+    <div class="optional">
+      <span class="tag">Every time you change something</span>
+      <div class="cmd"><pre class="term"><span class="fn">git</span> add .</pre><button type="button">Copy</button></div>
+      <div class="cmd"><pre class="term"><span class="fn">git</span> commit -m <span class="str">"What you changed"</span></pre><button type="button">Copy</button></div>
+      <div class="cmd"><pre class="term"><span class="fn">git</span> push</pre><button type="button">Copy</button></div>
+    </div>
+  </section>
+</div>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DOC = '<path class="paper" d="M0 0 H26 L36 10 V48 H0 Z"/><path class="fold" d="M26 0 V10 H36"/><path class="lines" d="M7 20 H29 M7 28 H29 M7 36 H22"/>';
+  function svg(cfg) {
+    return '<svg class="scene notrans" data-r="scene" viewBox="0 0 660 300" role="img" aria-label="' + cfg.label + '">' +
+      '<g data-r="laptop"><rect class="frame" x="20" y="24" width="300" height="196" rx="10"/><rect class="screen" x="32" y="36" width="276" height="172" rx="4"/><path class="frame" d="M4 220 H336 L328 236 H12 Z"/></g>' +
+      '<text class="mini" x="230" y="200" text-anchor="middle">repo</text>' +
+      '<text class="lbl" x="170" y="266" text-anchor="middle">uCloud</text><text class="lbl-sub" x="170" y="288" text-anchor="middle">local repo</text>' +
+      '<path class="arc" data-r="arc" d="M284 112 Q386 -6 488 100"/>' +
+      '<path class="cloud" data-r="cloud" d="M446 196 C404 196 404 136 446 134 C444 92 504 76 530 106 C556 70 624 84 616 138 C652 146 646 196 610 196 Z"/>' +
+      '<text class="lbl" x="527" y="266" text-anchor="middle">GitHub</text><text class="lbl-sub" x="527" y="288" text-anchor="middle">remote repo</text>' +
+      (cfg.site ? '<g data-r="site"><rect class="frame" x="490" y="2" width="160" height="62" rx="5"/><path class="frame" d="M490 18 H650"/>' +
+        '<circle class="dot" cx="499" cy="10" r="2.5"/><circle class="dot" cx="507" cy="10" r="2.5"/><circle class="dot" cx="515" cy="10" r="2.5"/>' +
+        '<text class="url" x="584" y="14" text-anchor="middle">yourname.github.io</text>' +
+        '<text class="site-h" data-r="siteH" x="570" y="47" text-anchor="middle">My Website</text></g>' : '') +
+      '<g class="doc" data-r="d1">' + DOC + '<text class="fname" x="18" y="62" text-anchor="middle">index.html</text></g>' +
+      '<g class="doc" data-r="d2">' + DOC + '<text class="fname" x="18" y="62" text-anchor="middle">style.css</text></g>' +
+      '<g transform="translate(190,108)"><rect class="box-body stk" data-r="st1" x="8" y="-2" width="80" height="67" rx="3"/></g>' +
+      '<g transform="translate(190,108)"><g class="lid" data-r="lid"><rect x="-4" y="8" width="88" height="12" rx="2"/></g>' +
+      '<rect class="box-body" x="0" y="20" width="80" height="55" rx="3"/><text class="ctag" data-r="tag" x="40" y="53" text-anchor="middle">commit</text></g>' +
+      '<rect class="box-body stk" data-r="cst1" x="495" y="102" width="80" height="67" rx="3"/>' +
+      '<g class="copy" data-r="copy" transform="translate(190,108)"><rect class="box-body" x="-4" y="8" width="88" height="12" rx="2"/>' +
+      '<rect class="box-body" x="0" y="20" width="80" height="55" rx="3"/><text class="ctag on" x="40" y="53" text-anchor="middle">commit</text></g>' +
+      '</svg>';
+  }
+  function template(cfg) {
+    var n = 0;
+    var groups = cfg.groups.map(function (g) {
+      return '<div class="grp"><span class="grp-h">' + g[0] + '</span><div class="grp-b">' +
+        g[1].map(function (label) { return '<button type="button" class="pill" data-s="' + (n++) + '">' + label + '</button>'; }).join("") + '</div></div>';
+    }).join("");
+    return '<div class="how-main"><div class="how-term" data-r="term" aria-live="polite"></div><p class="how-cap" data-r="cap"></p>' + svg(cfg) +
+      '<div class="hist"><span class="hist-label">History</span><ol class="hist-list" data-r="hist"></ol></div></div>' +
+      '<div class="how-controls"><button type="button" class="play" data-r="play">▶ Play all</button>' + groups + '</div>';
+  }
+
+  var POS = { files: { d1: [62, 80], d2: [130, 98] }, box: { d1: [202, 84], d2: [234, 90] }, inside: { d1: [202, 122], d2: [234, 124] } };
+  var A = [190, 108], C = [340, -50], B = [487, 104];
+  function at(p) { var q = 1 - p; return [q * q * A[0] + 2 * q * p * C[0] + p * p * B[0], q * q * A[1] + 2 * q * p * C[1] + p * p * B[1]]; }
+
+  function Anim(root, cfg) {
+    root.innerHTML = template(cfg);
+    var q = function (r) { return root.querySelector('[data-r="' + r + '"]'); };
+    var scenes = cfg.scenes, LAST = scenes.length - 1, cur = -1, timer = null, raf = null, flyWait = null, shown = 0, pushedNow = 0;
+    var copy = q("copy"), pills = root.querySelectorAll(".pill");
+    function place(id, st) {
+      var el = q(id), p = POS[st[0]][id];
+      el.style.transform = "translate(" + p[0] + "px," + p[1] + "px)";
+      el.setAttribute("class", "doc" + (st[1] ? " " + st[1] : "") + (st[0] === "files" ? "" : " nolabel"));
+      el.style.opacity = st[2] ? "0" : "1";
+    }
+    function renderHist(n, pushed) {
+      var ol = q("hist"); ol.innerHTML = "";
+      if (!n) ol.innerHTML = '<li class="empty">No commits yet</li>';
+      for (var i = 0; i < n; i++) {
+        var li = document.createElement("li"), c = cfg.commits[i];
+        if (i >= shown && !reduce && cur !== -1) li.className = "pop";
+        li.innerHTML = '<span class="id">' + c[0] + '</span><span class="msg">' + c[1] + '</span>' +
+          c[2].map(function (f) { return '<span class="f"><span class="k ' + f[0] + '">' + f[0] + '</span> ' + f[1] + '</span>'; }).join("") +
+          (i < pushed ? '<span class="where gh">on uCloud + GitHub</span>' : '<span class="where">only on uCloud</span>');
+        ol.appendChild(li);
+      }
+      shown = n;
+    }
+    function setCopy(p, op) { var xy = at(p); copy.setAttribute("transform", "translate(" + xy[0] + "," + xy[1] + ")"); copy.style.opacity = op; }
+    function stopFly() { cancelAnimationFrame(raf); clearTimeout(flyWait); }
+    function fly(delay) {
+      stopFly();
+      if (reduce) { setCopy(1, 1); return; }
+      setCopy(0, 0);
+      flyWait = setTimeout(function () {
+        var t0 = null;
+        function step(t) {
+          if (t0 === null) t0 = t;
+          var p = Math.min(1, (t - t0) / 1300), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+          setCopy(e, 1);
+          if (p < 1) raf = requestAnimationFrame(step);
+        }
+        raf = requestAnimationFrame(step);
+      }, delay);
+    }
+    function show(s) {
+      var sc = scenes[s], prev = cur;
+      place("d1", sc.d1); place("d2", sc.d2);
+      q("lid").style.transform = sc.open ? "rotate(-120deg)" : "none";
+      q("tag").setAttribute("class", "ctag" + (sc.open ? "" : " on"));
+      q("st1").style.opacity = sc.stack ? "1" : "0";
+      q("cst1").style.opacity = sc.pushed >= 2 ? "1" : "0";
+      q("laptop").setAttribute("class", sc.cloud || sc.siteOn ? "" : "on");
+      q("cloud").setAttribute("class", "cloud" + (sc.cloud ? " on" : ""));
+      q("arc").setAttribute("class", "arc" + (sc.cloud ? " on" : ""));
+      if (cfg.site) {
+        q("site").setAttribute("class", sc.siteOn ? "on" : "");
+        q("siteH").textContent = sc.site ? "My New Heading" : "My Website";
+        q("siteH").setAttribute("class", "site-h" + (sc.site ? " new" : ""));
+      }
+      if (sc.pushed > pushedNow && prev !== -1) fly(prev >= 0 && scenes[prev].open ? 800 : 150);
+      else { stopFly(); setCopy(sc.pushed ? 1 : 0, sc.pushed ? 1 : 0); }
+      pushedNow = sc.pushed;
+      q("term").innerHTML = sc.term;
+      q("cap").textContent = sc.cap;
+      renderHist(sc.hist, sc.pushed);
+      pills.forEach(function (b) { b.setAttribute("aria-pressed", String(+b.dataset.s === s)); });
+      cur = s;
+    }
+    function stop() { clearInterval(timer); timer = null; q("play").textContent = "▶ Play all"; }
+    pills.forEach(function (b) { b.addEventListener("click", function () { stop(); show(+b.dataset.s); }); });
+    q("play").addEventListener("click", function () {
+      if (timer) { stop(); return; }
+      show(cur >= LAST ? 0 : cur + 1);
+      q("play").textContent = "❚❚ Pause";
+      timer = setInterval(function () { if (cur >= LAST) { stop(); return; } show(cur + 1); }, 3000);
+    });
+    show(0);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { q("scene").classList.remove("notrans"); }); });
+    return { stop: stop };
+  }
+
+  var cmd = function (rest) { return '$ <span class="fn">git</span> ' + rest; };
+  var IN = ["inside", "", 1], RED1 = ["files", "red", 0], BOX1 = ["box", "green", 0];
+  var C1 = ["a1b2c3d", "First commit", [["new", "index.html"], ["new", "style.css"]]];
+  var C2 = ["e4f5a6b", "Change heading", [["changed", "index.html"]]];
+
+  var setup = {
+    label: "A laptop labelled uCloud, local repo, and a cloud labelled GitHub, remote repo. Files go into a box, the box closes as a commit, and a copy travels to the cloud.",
+    commits: [C1, C2],
+    groups: [
+      ["Adding the first files", ["Start", "git add", "git commit", "git push"]],
+      ["Editing a file (changing the heading in the index.html file), then pushing the change", ["edit a file", "git add", "git commit", "git push"]],
+      ["Viewing the history", ["git log"]]
+    ],
+    scenes: [
+      { term: '<span class="muted"># nothing saved yet</span>', cap: "Your website files are on uCloud. Red means Git has not saved them yet.",
+        d1: RED1, d2: ["files", "red", 0], open: 1, stack: 0, hist: 0, pushed: 0 },
+      { term: cmd("add ."), cap: "git add puts your files in the box, ready to save. They turn green.",
+        d1: BOX1, d2: ["box", "green", 0], open: 1, stack: 0, hist: 0, pushed: 0 },
+      { term: cmd('commit -m <span class="str">"First commit"</span>'), cap: "git commit closes the box and saves it in the history. It is only on uCloud so far.",
+        d1: IN, d2: IN, open: 0, stack: 0, hist: 1, pushed: 0 },
+      { term: cmd("push -u origin master"), cap: "git push sends a copy to GitHub. Now both have the same history.",
+        d1: IN, d2: IN, open: 0, stack: 0, hist: 1, pushed: 1, cloud: 1 },
+      { term: '<span class="muted"># you edit index.html</span>', cap: "You change index.html. It turns red, because it is different from your last commit.",
+        d1: RED1, d2: IN, open: 1, stack: 1, hist: 1, pushed: 1 },
+      { term: cmd("add index.html"), cap: "Only the changed file goes into the box. style.css did not change, so it stays out.",
+        d1: BOX1, d2: IN, open: 1, stack: 1, hist: 1, pushed: 1 },
+      { term: cmd('commit -m <span class="str">"Change heading"</span>'), cap: "git commit saves just that change as a new point in the history. GitHub does not have it yet.",
+        d1: IN, d2: IN, open: 0, stack: 1, hist: 2, pushed: 1 },
+      { term: cmd("push"), cap: "git push sends the new commit to GitHub. Both are in sync again.",
+        d1: IN, d2: IN, open: 0, stack: 1, hist: 2, pushed: 2, cloud: 1 },
+      { term: cmd('log --oneline') + '<br><span class="out"><span class="fn">e4f5a6b</span> Change heading<br><span class="fn">a1b2c3d</span> First commit</span>',
+        cap: "git log prints your history in the terminal, newest first. Each line is one commit: its ID and its note.",
+        d1: IN, d2: IN, open: 0, stack: 1, hist: 2, pushed: 2 }
+    ]
+  };
+
+  var changes = {
+    label: "A laptop labelled uCloud, a cloud labelled GitHub and a small browser window showing your site. index.html changes, is committed, pushed, and the site heading updates.",
+    site: true,
+    commits: [C1, C2],
+    groups: [
+      ["Changing the heading in index.html", ["site is live", "edit index.html", "git status"]],
+      ["Saving the change", ["git add", "git commit"]],
+      ["Updating your site", ["git push", "refresh site"]]
+    ],
+    scenes: [
+      { term: '<span class="muted"># everything is saved and pushed</span>', cap: "Your site is live. uCloud and GitHub have the same history.",
+        d1: IN, d2: IN, open: 0, stack: 0, hist: 1, pushed: 1 },
+      { term: '<span class="muted"># you change the heading in index.html and save</span>', cap: "You change index.html. It turns red, because it is different from your last commit.",
+        d1: RED1, d2: IN, open: 1, stack: 1, hist: 1, pushed: 1 },
+      { term: cmd("status") + '<br><span class="out"><span class="r">modified:   index.html</span></span>', cap: "git status lists what changed. Red means changed, but not ready to save yet.",
+        d1: RED1, d2: IN, open: 1, stack: 1, hist: 1, pushed: 1 },
+      { term: cmd("add .") + "<br>" + cmd("status") + '<br><span class="out"><span class="g">modified:   index.html</span></span>', cap: "git add puts the change in the box. git status now shows it in green.",
+        d1: BOX1, d2: IN, open: 1, stack: 1, hist: 1, pushed: 1 },
+      { term: cmd('commit -m <span class="str">"Change heading"</span>'), cap: "git commit saves the change as a new point in the history. GitHub does not have it yet.",
+        d1: IN, d2: IN, open: 0, stack: 1, hist: 2, pushed: 1 },
+      { term: cmd("push"), cap: "git push sends the new commit to GitHub. Both are in sync again.",
+        d1: IN, d2: IN, open: 0, stack: 1, hist: 2, pushed: 2, cloud: 1 },
+      { term: '<span class="muted"># wait a minute, then refresh your site</span>', cap: "GitHub Pages rebuilds your site from the new commit. Refresh, and the new heading is there.",
+        d1: IN, d2: IN, open: 0, stack: 1, hist: 2, pushed: 2, site: 1, siteOn: 1 }
+    ]
+  };
+
+  var anims = [Anim(document.querySelector('[data-anim="setup"]'), setup), Anim(document.querySelector('[data-anim="changes"]'), changes)];
+
+  var tabs = document.querySelectorAll(".tab");
+  function openTab(id) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("aria-controls") === id;
+      t.setAttribute("aria-selected", String(on));
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t) { t.addEventListener("click", function () { anims.forEach(function (a) { a.stop(); }); openTab(t.getAttribute("aria-controls")); }); });
+  if (location.hash === "#changes") openTab("changes");
+})();
+
+document.querySelectorAll(".cmd button").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var pre = btn.parentNode.querySelector("pre");
+    var text = pre.textContent;
+    function flash(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = "Copy"; }, 1500); }
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      flash("Ctrl+C");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flash("Copied"); }, selectIt);
+    } else { selectIt(); }
+  });
+});
+</script>
+</body>
+</html>
