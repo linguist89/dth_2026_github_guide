@@ -154,6 +154,7 @@ b { color: var(--white); }
 .grp-b { display: flex; flex-wrap: wrap; gap: 6px; }
 .hist-list .where { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .hist-list .where.gh { color: var(--blue); }
+.hist-list .where.gho { color: #e2c08d; }
 .pill, .play { font: inherit; font-size: 13px; cursor: pointer; border: 1px solid var(--line); border-radius: 4px; background: var(--code-bg); color: var(--ink); padding: 4px 12px; }
 .pill[aria-pressed="true"] { border-color: var(--blue); color: var(--white); background: rgba(79, 163, 247, .18); }
 .play { justify-self: start; color: var(--blue); }
@@ -177,6 +178,7 @@ b { color: var(--white); }
   <div class="tabs" role="tablist">
     <button type="button" role="tab" class="tab" id="tab-setup" aria-controls="setup" aria-selected="true">Full setup</button>
     <button type="button" role="tab" class="tab" id="tab-changes" aria-controls="changes" aria-selected="false">Making changes</button>
+    <button type="button" role="tab" class="tab" id="tab-licence" aria-controls="licence" aria-selected="false">Adding a licence</button>
   </div>
 </div></header>
 
@@ -321,6 +323,48 @@ b { color: var(--white); }
     </div>
   </section>
 </div>
+<div class="panel" id="licence" role="tabpanel" aria-labelledby="tab-licence" hidden>
+  <section class="part wide">
+    <h2>What happens when you change something on GitHub</h2>
+    <div class="how" data-anim="licence"></div>
+  </section>
+  <section class="part">
+    <h2>Add a licence</h2>
+    <p class="why">A public repo without a licence is not open source: others may look, but not reuse. You add the licence on GitHub, then pull it down to uCloud.</p>
+    <ol class="steps">
+      <li><div class="step">
+        <div class="head"><p>Open your GitHub Pages repo on github.com.</p><p class="sub">There is no LICENSE file yet, so your site is public, but not open.</p></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Click <b>Add file</b>, then <b>Create new file</b>, and paste this name:</p><p class="sub">Use this exact spelling, in capitals. A <b>Choose a license template</b> button then appears.</p></div>
+        <div class="cmd"><pre>LICENSE</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Click <b>Choose a license template</b>, pick a licence and click <b>Commit changes</b>.</p><p class="sub">Read the short summaries and pick the one that fits your site. Be ready to say why.</p></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Check the right-hand column of your repo.</p><p class="sub">Your licence now shows there.</p></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>In your terminal, go into your website folder.</p><p class="sub">So Git knows which repo you are working in.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">cd</span> week43_assignment_template/html_css_template</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Get the new commit from GitHub.</p><p class="sub">So your uCloud copy has the change you made on GitHub.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> pull</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
+        <div class="head"><p>Check that it worked.</p><p class="sub">LICENSE is now in your folder, and the history shows the commit you made on GitHub.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">ls</span></pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> log --oneline</pre><button type="button">Copy</button></div>
+      </div></li>
+    </ol>
+    <div class="optional">
+      <span class="tag">Think about it</span>
+      <p>Why wasn't LICENSE in your folder until you ran <b>git pull</b>?</p>
+    </div>
+  </section>
+</div>
 </div>
 
 <script>
@@ -341,11 +385,15 @@ b { color: var(--white); }
         '<text class="site-h" data-r="siteH" x="570" y="47" text-anchor="middle">My Website</text></g>' : '') +
       '<g class="doc" data-r="d1">' + DOC + '<text class="fname" x="18" y="62" text-anchor="middle">index.html</text></g>' +
       '<g class="doc" data-r="d2">' + DOC + '<text class="fname" x="18" y="62" text-anchor="middle">style.css</text></g>' +
-      '<g transform="translate(190,108)"><rect class="box-body stk" data-r="st1" x="8" y="-2" width="80" height="67" rx="3"/></g>' +
+      '<g transform="translate(190,108)"><rect class="box-body stk" data-r="st2" x="16" y="-12" width="80" height="67" rx="3"/><rect class="box-body stk" data-r="st1" x="8" y="-2" width="80" height="67" rx="3"/></g>' +
       '<g transform="translate(190,108)"><g class="lid" data-r="lid"><rect x="-4" y="8" width="88" height="12" rx="2"/></g>' +
       '<rect class="box-body" x="0" y="20" width="80" height="55" rx="3"/><text class="ctag" data-r="tag" x="40" y="53" text-anchor="middle">commit</text></g>' +
+      '<rect class="box-body stk" data-r="cst2" x="503" y="92" width="80" height="67" rx="3"/>' +
       '<rect class="box-body stk" data-r="cst1" x="495" y="102" width="80" height="67" rx="3"/>' +
       '<g class="copy" data-r="copy" transform="translate(190,108)"><rect class="box-body" x="-4" y="8" width="88" height="12" rx="2"/>' +
+      '<rect class="box-body" x="0" y="20" width="80" height="55" rx="3"/><text class="ctag on" x="40" y="53" text-anchor="middle">commit</text></g>' +
+      '<g class="doc" data-r="d3">' + DOC + '<text class="fname" x="18" y="62" text-anchor="middle">LICENSE</text></g>' +
+      '<g class="copy" data-r="pullbox" transform="translate(487,104)"><rect class="box-body" x="-4" y="8" width="88" height="12" rx="2"/>' +
       '<rect class="box-body" x="0" y="20" width="80" height="55" rx="3"/><text class="ctag on" x="40" y="53" text-anchor="middle">commit</text></g>' +
       '</svg>';
   }
@@ -360,7 +408,9 @@ b { color: var(--white); }
       '<div class="how-controls"><button type="button" class="play" data-r="play">▶ Play all</button>' + groups + '</div>';
   }
 
-  var POS = { files: { d1: [62, 80], d2: [130, 98] }, box: { d1: [202, 84], d2: [234, 90] }, inside: { d1: [202, 122], d2: [234, 124] } };
+  var POS = { files: { d1: [62, 80], d2: [130, 98], d3: [62, 80] }, box: { d1: [202, 84], d2: [234, 90] }, inside: { d1: [202, 122], d2: [234, 124] },
+    remote: { d3: [586, 112] }, remoteIn: { d3: [509, 128] } };
+  var WHERE = { both: ['gh', 'on uCloud + GitHub'], local: ['', 'only on uCloud'], github: ['gho', 'only on GitHub'] };
   var A = [190, 108], C = [340, -50], B = [487, 104];
   function at(p) { var q = 1 - p; return [q * q * A[0] + 2 * q * p * C[0] + p * p * B[0], q * q * A[1] + 2 * q * p * C[1] + p * p * B[1]]; }
 
@@ -372,10 +422,10 @@ b { color: var(--white); }
     function place(id, st) {
       var el = q(id), p = POS[st[0]][id];
       el.style.transform = "translate(" + p[0] + "px," + p[1] + "px)";
-      el.setAttribute("class", "doc" + (st[1] ? " " + st[1] : "") + (st[0] === "files" ? "" : " nolabel"));
+      el.setAttribute("class", "doc" + (st[1] ? " " + st[1] : "") + (st[0] === "files" || st[0] === "remote" ? "" : " nolabel"));
       el.style.opacity = st[2] ? "0" : "1";
     }
-    function renderHist(n, pushed) {
+    function renderHist(n, pushed, where) {
       var ol = q("hist"); ol.innerHTML = "";
       if (!n) ol.innerHTML = '<li class="empty">No commits yet</li>';
       for (var i = 0; i < n; i++) {
@@ -383,12 +433,29 @@ b { color: var(--white); }
         if (i >= shown && !reduce && cur !== -1) li.className = "pop";
         li.innerHTML = '<span class="id">' + c[0] + '</span><span class="msg">' + c[1] + '</span>' +
           c[2].map(function (f) { return '<span class="f"><span class="k ' + f[0] + '">' + f[0] + '</span> ' + f[1] + '</span>'; }).join("") +
-          (i < pushed ? '<span class="where gh">on uCloud + GitHub</span>' : '<span class="where">only on uCloud</span>');
+          (function (w) { return '<span class="where ' + w[0] + '">' + w[1] + '</span>'; })(WHERE[where ? where[i] : (i < pushed ? "both" : "local")]);
         ol.appendChild(li);
       }
       shown = n;
     }
     function setCopy(p, op) { var xy = at(p); copy.setAttribute("transform", "translate(" + xy[0] + "," + xy[1] + ")"); copy.style.opacity = op; }
+    var pullbox = q("pullbox"), raf2 = null, pullWait = null;
+    function setPull(p, op) { var xy = at(p); pullbox.setAttribute("transform", "translate(" + xy[0] + "," + xy[1] + ")"); pullbox.style.opacity = op; }
+    function stopPull() { cancelAnimationFrame(raf2); clearTimeout(pullWait); setPull(1, 0); }
+    function flyPull(delay) {
+      stopPull();
+      if (reduce) return;
+      pullWait = setTimeout(function () {
+        var t0 = null;
+        function step(t) {
+          if (t0 === null) t0 = t;
+          var p = Math.min(1, (t - t0) / 1300), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+          setPull(1 - e, 1);
+          if (p < 1) raf2 = requestAnimationFrame(step); else setPull(0, 0);
+        }
+        raf2 = requestAnimationFrame(step);
+      }, delay);
+    }
     function stopFly() { cancelAnimationFrame(raf); clearTimeout(flyWait); }
     function fly(delay) {
       stopFly();
@@ -407,14 +474,18 @@ b { color: var(--white); }
     }
     function show(s) {
       var sc = scenes[s], prev = cur;
-      place("d1", sc.d1); place("d2", sc.d2);
+      place("d1", sc.d1); place("d2", sc.d2); place("d3", sc.d3 || ["remoteIn", "", 1]);
       q("lid").style.transform = sc.open ? "rotate(-120deg)" : "none";
       q("tag").setAttribute("class", "ctag" + (sc.open ? "" : " on"));
-      q("st1").style.opacity = sc.stack ? "1" : "0";
+      q("st1").style.opacity = sc.stack >= 1 ? "1" : "0";
+      q("st2").style.opacity = sc.stack >= 2 ? "1" : "0";
+      q("st2").style.transitionDelay = sc.pull && prev < s && !reduce ? "1.2s" : "0s";
       q("cst1").style.opacity = sc.pushed >= 2 ? "1" : "0";
+      q("cst2").style.opacity = sc.cst2 ? "1" : "0";
+      if (sc.pull && prev !== -1 && prev < s) flyPull(150); else stopPull();
       q("laptop").setAttribute("class", sc.cloud || sc.siteOn ? "" : "on");
       q("cloud").setAttribute("class", "cloud" + (sc.cloud ? " on" : ""));
-      q("arc").setAttribute("class", "arc" + (sc.cloud ? " on" : ""));
+      q("arc").setAttribute("class", "arc" + (sc.cloud || sc.arc ? " on" : ""));
       if (cfg.site) {
         q("site").setAttribute("class", sc.siteOn ? "on" : "");
         q("siteH").textContent = sc.site ? "My New Heading" : "My Website";
@@ -425,7 +496,7 @@ b { color: var(--white); }
       pushedNow = sc.pushed;
       q("term").innerHTML = sc.term;
       q("cap").textContent = sc.cap;
-      renderHist(sc.hist, sc.pushed);
+      renderHist(sc.hist, sc.pushed, sc.where);
       pills.forEach(function (b) { b.setAttribute("aria-pressed", String(+b.dataset.s === s)); });
       cur = s;
     }
@@ -505,7 +576,33 @@ b { color: var(--white); }
     ]
   };
 
-  var anims = [Anim(document.querySelector('[data-anim="setup"]'), setup), Anim(document.querySelector('[data-anim="changes"]'), changes)];
+  var C3 = ["f9e8d7c", "Add LICENSE", [["new", "LICENSE"]]];
+  var SYNC = { d1: IN, d2: IN, open: 0, pushed: 2 };
+  function L(o) { var r = {}; for (var k in SYNC) r[k] = SYNC[k]; for (k in o) r[k] = o[k]; return r; }
+  var licence = {
+    label: "A laptop labelled uCloud and a cloud labelled GitHub. A LICENSE file is created and committed on GitHub, then a copy of that commit travels down to uCloud.",
+    commits: [C1, C2, C3],
+    groups: [
+      ["Adding a licence on GitHub", ["in sync", "create LICENSE", "commit on GitHub"]],
+      ["Getting it onto uCloud", ["git pull", "git log"]]
+    ],
+    scenes: [
+      L({ term: '<span class="muted"># uCloud and GitHub are in sync</span>', cap: "Both have the same history. There is no licence yet.",
+        stack: 1, hist: 2 }),
+      L({ term: '<span class="muted"># on github.com: Add file, Create new file, name it LICENSE</span>', cap: "On github.com, you create a file called LICENSE and pick a licence template.",
+        stack: 1, hist: 2, cloud: 1, d3: ["remote", "", 0] }),
+      L({ term: '<span class="muted"># on github.com: click Commit changes</span>', cap: "The licence is saved as a new commit on GitHub. Your uCloud copy does not have it yet.",
+        stack: 1, hist: 3, cloud: 1, cst2: 1, d3: ["remoteIn", "", 1], where: ["both", "both", "github"] }),
+      L({ term: cmd("pull"), cap: "git pull copies the new commit from GitHub to uCloud. LICENSE is now in your folder.",
+        stack: 2, hist: 3, arc: 1, cst2: 1, pull: 1, d3: ["files", "", 0], where: ["both", "both", "both"] }),
+      L({ term: cmd('log --oneline') + '<br><span class="out"><span class="fn">f9e8d7c</span> Add LICENSE<br><span class="fn">e4f5a6b</span> Change heading<br><span class="fn">a1b2c3d</span> First commit</span>',
+        cap: "git log now shows the commit you made on GitHub. Both histories match again.",
+        stack: 2, hist: 3, cst2: 1, d3: ["files", "", 0], where: ["both", "both", "both"] })
+    ]
+  };
+
+  var anims = [Anim(document.querySelector('[data-anim="setup"]'), setup), Anim(document.querySelector('[data-anim="changes"]'), changes),
+    Anim(document.querySelector('[data-anim="licence"]'), licence)];
 
   var tabs = document.querySelectorAll(".tab");
   function openTab(id) {
@@ -516,7 +613,8 @@ b { color: var(--white); }
     });
   }
   tabs.forEach(function (t) { t.addEventListener("click", function () { anims.forEach(function (a) { a.stop(); }); openTab(t.getAttribute("aria-controls")); }); });
-  if (location.hash === "#changes") openTab("changes");
+  var h = location.hash.slice(1);
+  if (h === "changes" || h === "licence") openTab(h);
 })();
 
 document.querySelectorAll(".cmd button").forEach(function (btn) {

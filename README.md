@@ -6,10 +6,11 @@ Made for students in Digital Technologies in the Humanities, week 43.
 
 ## What is on the site
 
-The site has two tabs:
+The site has three tabs:
 
 - **Full setup:** turn your website folder into a Git repo, create a token, push your files to GitHub, and switch on GitHub Pages.
 - **Making changes:** change a file and update your live site with `git add`, `git commit` and `git push`.
+- **Adding a licence:** add a LICENSE file on GitHub, then bring it to uCloud with `git pull`.
 
 Each tab starts with a short animation that shows what happens on uCloud (your local repo) and on GitHub (the remote repo).
 
