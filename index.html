@@ -350,6 +350,11 @@ b { color: var(--white); }
         <div class="cmd"><pre class="term"><span class="fn">cd</span> week43_assignment_template/html_css_template</pre><button type="button">Copy</button></div>
       </div></li>
       <li><div class="step">
+        <div class="head"><p>Check if GitHub has new commits.</p><p class="sub">git fetch looks at GitHub without changing your files. git status then says if you are behind.</p></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> fetch</pre><button type="button">Copy</button></div>
+        <div class="cmd"><pre class="term"><span class="fn">git</span> status</pre><button type="button">Copy</button></div>
+      </div></li>
+      <li><div class="step">
         <div class="head"><p>Get the new commit from GitHub.</p><p class="sub">So your uCloud copy has the change you made on GitHub.</p></div>
         <div class="cmd"><pre class="term"><span class="fn">git</span> pull</pre><button type="button">Copy</button></div>
       </div></li>
@@ -584,7 +589,7 @@ b { color: var(--white); }
     commits: [C1, C2, C3],
     groups: [
       ["Adding a licence on GitHub", ["in sync", "create LICENSE", "commit on GitHub"]],
-      ["Getting it onto uCloud", ["git pull", "git log"]]
+      ["Getting it onto uCloud", ["git fetch", "git pull", "git log"]]
     ],
     scenes: [
       L({ term: '<span class="muted"># uCloud and GitHub are in sync</span>', cap: "Both have the same history. There is no licence yet.",
@@ -593,6 +598,9 @@ b { color: var(--white); }
         stack: 1, hist: 2, cloud: 1, d3: ["remote", "", 0] }),
       L({ term: '<span class="muted"># on github.com: click Commit changes</span>', cap: "The licence is saved as a new commit on GitHub. Your uCloud copy does not have it yet.",
         stack: 1, hist: 3, cloud: 1, cst2: 1, d3: ["remoteIn", "", 1], where: ["both", "both", "github"] }),
+      L({ term: cmd("fetch") + "<br>" + cmd("status") + '<br><span class="out">Your branch is behind \'origin/master\' by 1 commit</span>',
+        cap: "git fetch checks GitHub for new commits without changing your files. git status then tells you that you are 1 commit behind.",
+        stack: 1, hist: 3, arc: 1, cst2: 1, d3: ["remoteIn", "", 1], where: ["both", "both", "github"] }),
       L({ term: cmd("pull"), cap: "git pull copies the new commit from GitHub to uCloud. LICENSE is now in your folder.",
         stack: 2, hist: 3, arc: 1, cst2: 1, pull: 1, d3: ["files", "", 0], where: ["both", "both", "both"] }),
       L({ term: cmd('log --oneline') + '<br><span class="out"><span class="fn">f9e8d7c</span> Add LICENSE<br><span class="fn">e4f5a6b</span> Change heading<br><span class="fn">a1b2c3d</span> First commit</span>',
